@@ -1,0 +1,23 @@
+.top {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px;
+}
+
+.inputGroup {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  margin-bottom: -5px;
+}
+
+.inputBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.btns {
+  display: flex;
+  gap: 20px;
+}
