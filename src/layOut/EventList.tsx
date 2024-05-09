@@ -1,5 +1,5 @@
-import "./bottomCss.css";
 import EventItem from "../components/EventItem";
+// import { Box } from "@mui/system";
 
 interface Props {
   list: object[];
@@ -20,6 +20,7 @@ export default function EventList({
 
   return (
     <>
+      {/* <Box sx={{ color: "primary.main", fontSize: 30 }}>test the sx props</Box> */}
       <ul>
         {listA.length !== 0 && <p>Type A</p>}
         {listA.map((item) => (

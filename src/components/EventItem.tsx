@@ -1,3 +1,6 @@
+import "./bottomCss.css";
+import { fontSize } from "@mui/system";
+
 interface Item {
   id: number;
   type: number;
