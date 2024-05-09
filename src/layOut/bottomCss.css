@@ -1,5 +1,6 @@
 .eventItem {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) repeat(3, 0.5fr);
+  text-align: center;
   align-items: center;
-  justify-content: space-evenly;
 }

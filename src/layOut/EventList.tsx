@@ -2,10 +2,18 @@ import "./bottomCss.css";
 import EventItem from "../components/EventItem";
 
 interface Props {
-  list: [];
+  list: object[];
+  onDelete: () => void;
+  toggleEdit: () => void;
+  onInfoEdit: () => void;
 }
 
-export default function EventList({ list }: Props) {
+export default function EventList({
+  list,
+  onDelete,
+  toggleEdit,
+  onInfoEdit,
+}: Props) {
   const listA = list.filter((item) => item.type === 0);
   const listB = list.filter((item) => item.type === 1);
   const listC = list.filter((item) => item.type === 2);
@@ -13,21 +21,39 @@ export default function EventList({ list }: Props) {
   return (
     <>
       <ul>
-        <p>Type A</p>
+        {listA.length !== 0 && <p>Type A</p>}
         {listA.map((item) => (
-          <EventItem key={item.topic} item={item} />
+          <EventItem
+            key={item.id}
+            item={item}
+            onDelete={onDelete}
+            toggleEdit={toggleEdit}
+            onInfoEdit={onInfoEdit}
+          />
         ))}
       </ul>
       <ul>
-        <p>Type B</p>
+        {listB.length !== 0 && <p>Type B</p>}
         {listB.map((item) => (
-          <EventItem key={item.topic} item={item} />
+          <EventItem
+            key={item.id}
+            item={item}
+            onDelete={onDelete}
+            toggleEdit={toggleEdit}
+            onInfoEdit={onInfoEdit}
+          />
         ))}
       </ul>
       <ul>
-        <p>Type C</p>
+        {listC.length !== 0 && <p>Type C</p>}
         {listC.map((item) => (
-          <EventItem key={item.topic} item={item} />
+          <EventItem
+            key={item.id}
+            item={item}
+            onDelete={onDelete}
+            toggleEdit={toggleEdit}
+            onInfoEdit={onInfoEdit}
+          />
         ))}
       </ul>
     </>
