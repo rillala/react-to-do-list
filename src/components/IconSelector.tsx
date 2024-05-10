@@ -1,12 +1,30 @@
+import Fetch from "ahooks/lib/useRequest/src/Fetch";
+import { useEffect, useState } from "react";
+
 export default function IconSelector({ inputIcon, onIconChange }) {
+  const [icon, setIcon] = useState([]);
+
+  useEffect(() => {
+    fetch("https://pokeapi.co/api/v2/pokemon")
+      .then((res) => res.json())
+      .then((json) => {
+        setIcon(json.results);
+        console.log(json.results);
+      });
+  }, []);
+
   return (
     <select value={inputIcon} onChange={onIconChange}>
       <option value="" disabled>
         choose icon
       </option>
-      <option value={10}>Ten</option>
-      <option value={20}>Twenty</option>
-      <option value={30}>Thirty</option>
+      {icon.map((each) => {
+        return (
+          <option key={each.name} value={each.url}>
+            {each.name}
+          </option>
+        );
+      })}
     </select>
   );
 }

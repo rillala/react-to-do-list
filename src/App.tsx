@@ -1,38 +1,39 @@
 import TopArea from "./layOut/TopArea";
 import EventList from "./layOut/EventList";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
-const initialList = [
-  {
-    id: 1,
-    type: 0,
-    topic: "topic1",
-    info: "info1",
-    icon: "icon1",
-    isEdit: false,
-  },
+// const initialList = [
+//   {
+//     id: 1,
+//     type: 0,
+//     topic: "topic1",
+//     info: "info1",
+//     icon: "icon1",
+//     isEdit: false,
+//   },
 
-  {
-    id: 2,
-    type: 1,
-    topic: "topic2",
-    info: "info2",
-    icon: "icon2",
-    isEdit: false,
-  },
+//   {
+//     id: 2,
+//     type: 1,
+//     topic: "topic2",
+//     info: "info2",
+//     icon: "icon2",
+//     isEdit: false,
+//   },
 
-  {
-    id: 3,
-    type: 2,
-    topic: "topic3",
-    info: "info3",
-    icon: "icon3",
-    isEdit: false,
-  },
-];
+//   {
+//     id: 3,
+//     type: 2,
+//     topic: "topic3",
+//     info: "info3",
+//     icon: "icon3",
+//     isEdit: false,
+//   },
+// ];
 
 function App() {
-  const [eventList, setEventList] = useState(initialList);
+  // const [eventList, setEventList] = useState(initialList);
+  const [eventList, setEventList] = useState([]);
   const [newEvent, setNewEvent] = useState(null);
   const [newEventId, setNewEventId] = useState(-1);
 
@@ -67,7 +68,17 @@ function App() {
   const [eventType, setEventType] = useState("");
 
   function submitEvent(type) {
-    if (newEvent !== null) {
+    const isFilled = newEvent
+      ? newEvent.icon
+        ? newEvent.topic
+          ? newEvent.info
+            ? true
+            : false
+          : false
+        : false
+      : false;
+
+    if (isFilled) {
       const eventId = new Date().getTime();
       setEventType(type); // 假設你有這個 setState 函數來更新某個 state
       setNewEventId(eventId); // 假設你有這個 setState 函數來更新某個 state
@@ -82,6 +93,8 @@ function App() {
         ...eventList,
         { ...newEvent, type: type, id: eventId, isEdit: false },
       ]);
+    } else {
+      alert("Please choose all the input!");
     }
   }
 

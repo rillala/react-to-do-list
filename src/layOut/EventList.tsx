@@ -1,5 +1,5 @@
 import EventItem from "../components/EventItem";
-// import { Box } from "@mui/system";
+import { Box } from "@mui/system";
 
 interface Props {
   list: object[];
@@ -20,43 +20,56 @@ export default function EventList({
 
   return (
     <>
-      {/* <Box sx={{ color: "primary.main", fontSize: 30 }}>test the sx props</Box> */}
-      <ul>
-        {listA.length !== 0 && <p>Type A</p>}
-        {listA.map((item) => (
-          <EventItem
-            key={item.id}
-            item={item}
-            onDelete={onDelete}
-            toggleEdit={toggleEdit}
-            onInfoEdit={onInfoEdit}
-          />
-        ))}
-      </ul>
-      <ul>
-        {listB.length !== 0 && <p>Type B</p>}
-        {listB.map((item) => (
-          <EventItem
-            key={item.id}
-            item={item}
-            onDelete={onDelete}
-            toggleEdit={toggleEdit}
-            onInfoEdit={onInfoEdit}
-          />
-        ))}
-      </ul>
-      <ul>
-        {listC.length !== 0 && <p>Type C</p>}
-        {listC.map((item) => (
-          <EventItem
-            key={item.id}
-            item={item}
-            onDelete={onDelete}
-            toggleEdit={toggleEdit}
-            onInfoEdit={onInfoEdit}
-          />
-        ))}
-      </ul>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {listA.length !== 0 && (
+          <Box sx={{ border: 2, borderColor: "primary.main" }}>
+            <ul>
+              <p>Type A</p>
+              {listA.map((item) => (
+                <EventItem
+                  key={item.id}
+                  item={item}
+                  onDelete={onDelete}
+                  toggleEdit={toggleEdit}
+                  onInfoEdit={onInfoEdit}
+                />
+              ))}
+            </ul>
+          </Box>
+        )}
+        {listB.length !== 0 && (
+          <Box sx={{ border: 2, borderColor: "primary.light" }}>
+            <ul>
+              <p>Type B</p>
+              {listB.map((item) => (
+                <EventItem
+                  key={item.id}
+                  item={item}
+                  onDelete={onDelete}
+                  toggleEdit={toggleEdit}
+                  onInfoEdit={onInfoEdit}
+                />
+              ))}
+            </ul>
+          </Box>
+        )}
+        {listC.length !== 0 && (
+          <Box sx={{ border: 2, borderColor: "secondary.light" }}>
+            <ul>
+              <p>Type C</p>
+              {listC.map((item) => (
+                <EventItem
+                  key={item.id}
+                  item={item}
+                  onDelete={onDelete}
+                  toggleEdit={toggleEdit}
+                  onInfoEdit={onInfoEdit}
+                />
+              ))}
+            </ul>
+          </Box>
+        )}
+      </Box>
     </>
   );
 }
