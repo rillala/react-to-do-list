@@ -1,20 +1,19 @@
 import TopArea from "./layOut/TopArea";
 import EventList from "./layOut/EventList";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 function App() {
   // const [eventList, setEventList] = useState(initialList);
   const [eventList, setEventList] = useState([]);
-  const [newEvent, setNewEvent] = useState({});
+  const newEvent = useRef({});
   const [newEventId, setNewEventId] = useState(-1);
-
-  // 更新事件標題 (Topic)
-  const [inputTopic, setInputTopic] = useState("");
 
   function handleTopic(e) {
     const updatedTopic = e.target.value;
-    setInputTopic(updatedTopic);
-    setNewEvent((ne) => ({ ...ne, topic: updatedTopic }));
+    // setInputTopic(updatedTopic);
+    console.log(updatedTopic);
+    newEvent.current.topic = updatedTopic;
+    // setNewEvent((ne) => ({ ...ne, topic: updatedTopic }));
   }
 
   // 更新事件內容 (Info)
@@ -38,36 +37,39 @@ function App() {
   // 處理事件種類指定, 並新增事件
   const [eventType, setEventType] = useState("");
 
-  function submitEvent(type) {
-    const isFilled = newEvent
-      ? newEvent.icon
-        ? newEvent.topic
-          ? newEvent.info
-            ? true
-            : false
-          : false
-        : false
-      : false;
+  const submitEvent = useCallback(
+    (type) => {
+      console.log(
+        "submit",
+        newEvent,
+        newEvent.icon,
+        newEvent.topic,
+        newEvent.info
+      );
+      const isFilled =
+        newEvent && newEvent.icon && newEvent.topic && newEvent.info;
 
-    if (isFilled) {
-      const eventId = new Date().getTime();
-      setEventType(type); // 假設你有這個 setState 函數來更新某個 state
-      setNewEventId(eventId); // 假設你有這個 setState 函數來更新某個 state
-      setNewEvent((newEvent) => ({
-        ...newEvent,
-        type: type,
-        id: eventId,
-        isEdit: false,
-      }));
+      if (isFilled) {
+        const eventId = new Date().getTime();
+        setEventType(type); // 假設你有這個 setState 函數來更新某個 state
+        setNewEventId(eventId); // 假設你有這個 setState 函數來更新某個 state
+        setNewEvent((newEvent) => ({
+          ...newEvent,
+          type: type,
+          id: eventId,
+          isEdit: false,
+        }));
 
-      setEventList((eventList) => [
-        ...eventList,
-        { ...newEvent, type: type, id: eventId, isEdit: false },
-      ]);
-    } else {
-      alert("Please choose all the input!");
-    }
-  }
+        setEventList((eventList) => [
+          ...eventList,
+          { ...newEvent, type: type, id: eventId, isEdit: false },
+        ]);
+      } else {
+        alert("Please choose all the input!");
+      }
+    },
+    [newEvent]
+  );
 
   // 刪除事件
   function deleteEvent(eventId) {
@@ -95,7 +97,7 @@ function App() {
   }
 
   useEffect(() => {
-    setInputTopic("");
+    // setInputTopic("");
     setInputInfo("");
     setInputIcon("");
     setNewEvent(null);
@@ -106,12 +108,12 @@ function App() {
       <TopArea
         inputInfo={inputInfo}
         onInfoChange={handleInfo}
-        inputTopic={inputTopic}
         onTopicChange={handleTopic}
         inputIcon={inputIcon}
         onIconChange={handleIcon}
         onEventSubmit={submitEvent}
       />
+
       <EventList
         list={eventList}
         onEdit={editEvent}

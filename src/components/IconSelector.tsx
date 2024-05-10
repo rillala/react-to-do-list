@@ -9,6 +9,7 @@ export default function IconSelector({ inputIcon, onIconChange }) {
       .then((json) => {
         setIcon(json.results);
       });
+    console.log("get pokemon original list again");
   }, []);
 
   return (

@@ -19,7 +19,7 @@ const router = createBrowserRouter([
 ]);
 
 // theme type
-const themeType = 1;
+const themeType = 0;
 const currentTheme = themeType ? theme : secondTheme;
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

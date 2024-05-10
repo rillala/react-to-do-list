@@ -1,5 +1,6 @@
 import { styled } from "@mui/system";
 import { Button as BaseButton } from "@mui/base/Button";
+import { memo } from "react";
 
 // export const StyleButton = styled(BaseButton)(
 //   ({ theme }) => `
@@ -22,21 +23,23 @@ import { Button as BaseButton } from "@mui/base/Button";
 // `
 // );
 
-export const StyleButton = styled(BaseButton)(({ theme }) => ({
-  color: theme.palette.text.primary,
-  backgroundColor: theme.palette.primary.light,
-  border: "0px",
-  padding: "20px",
-  boxShadow: `5px 5px ${theme.palette.primary.main}`,
-  "&:hover": {
-    backgroundColor: theme.palette.secondary.light,
-  },
-  "&:active": {
-    backgroundColor: theme.palette.error.light,
-    boxShadow: "none",
-    transform: "scale(0.9)",
-  },
-}));
+export const StyleButton = memo(
+  styled(BaseButton)(({ theme }) => ({
+    color: theme.palette.text.primary,
+    backgroundColor: theme.palette.primary.light,
+    border: "0px",
+    padding: "20px",
+    boxShadow: `5px 5px ${theme.palette.primary.main}`,
+    "&:hover": {
+      backgroundColor: theme.palette.secondary.light,
+    },
+    "&:active": {
+      backgroundColor: theme.palette.error.light,
+      boxShadow: "none",
+      transform: "scale(0.9)",
+    },
+  }))
+);
 
 export const StyleButton2 = styled("button")({
   color: "#fff",
