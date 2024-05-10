@@ -2,39 +2,10 @@ import TopArea from "./layOut/TopArea";
 import EventList from "./layOut/EventList";
 import { useState, useEffect } from "react";
 
-// const initialList = [
-//   {
-//     id: 1,
-//     type: 0,
-//     topic: "topic1",
-//     info: "info1",
-//     icon: "icon1",
-//     isEdit: false,
-//   },
-
-//   {
-//     id: 2,
-//     type: 1,
-//     topic: "topic2",
-//     info: "info2",
-//     icon: "icon2",
-//     isEdit: false,
-//   },
-
-//   {
-//     id: 3,
-//     type: 2,
-//     topic: "topic3",
-//     info: "info3",
-//     icon: "icon3",
-//     isEdit: false,
-//   },
-// ];
-
 function App() {
   // const [eventList, setEventList] = useState(initialList);
   const [eventList, setEventList] = useState([]);
-  const [newEvent, setNewEvent] = useState(null);
+  const [newEvent, setNewEvent] = useState({});
   const [newEventId, setNewEventId] = useState(-1);
 
   // 更新事件標題 (Topic)
@@ -129,15 +100,6 @@ function App() {
     setInputIcon("");
     setNewEvent(null);
   }, [eventList]);
-
-  // // 測試 styled
-
-  // const TopArea = styled(TopArea)({
-  //   color: "darkslategray",
-  //   backgroundColor: "aliceblue",
-  //   padding: 8,
-  //   borderRadius: 4,
-  // });
 
   return (
     <>

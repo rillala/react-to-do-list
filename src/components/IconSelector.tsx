@@ -1,4 +1,3 @@
-import Fetch from "ahooks/lib/useRequest/src/Fetch";
 import { useEffect, useState } from "react";
 
 export default function IconSelector({ inputIcon, onIconChange }) {
@@ -9,7 +8,6 @@ export default function IconSelector({ inputIcon, onIconChange }) {
       .then((res) => res.json())
       .then((json) => {
         setIcon(json.results);
-        console.log(json.results);
       });
   }, []);
 
