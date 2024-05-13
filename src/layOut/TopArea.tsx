@@ -1,22 +1,15 @@
 import Button from "../components/Button";
 import { IconSelector } from "../components/IconSelector";
 import "./topCss.css";
-import {
-  useCallback,
-  useState,
-  useRef,
-  forwardRef,
-  useImperativeHandle,
-  createRef,
-} from "react";
+import { useCallback, useRef, forwardRef, useImperativeHandle } from "react";
 
 export const TopArea = forwardRef((props, ref) => {
   const { onEventAsubmit, onEventBsubmit, onEventCsubmit } = props;
 
   // 用來創建新事件資料
   const newEvent = useRef(null);
-  const iconInput = useRef(null);
   const topicInput = useRef(null);
+  const iconInput = useRef(null);
   const infoInput = useRef(null);
 
   // 用來綁定 DOM node
@@ -75,11 +68,14 @@ export const TopArea = forwardRef((props, ref) => {
     }
   }
 
-  // 清空 input 欄位
+  // 清空 input 欄位及儲存的值
   function clearAllInput() {
     iconInputElement.current.value = "";
     topicInputElement.current.value = "";
     infoInputElement.current.value = "";
+    topicInput.current = "";
+    iconInput.current = "";
+    infoInput.current = "";
     newEvent.current = null;
     console.log("Clear all input");
   }

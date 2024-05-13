@@ -1,6 +1,6 @@
 import { TopArea } from "./layOut/TopArea";
 import EventList from "./layOut/EventList";
-import { useState, useEffect, useCallback, useRef, createRef } from "react";
+import { useState, useCallback, useRef, createRef } from "react";
 
 // * 改由 TopArea 統合好整個 newEvent 之後傳遞給 App.tsx 的 eventList
 
@@ -9,17 +9,18 @@ function App() {
   const topAreaRef = createRef();
 
   // submit new event (with different type) & clear input area
-  function handleEventSubmit(type) {
-    topAreaRef.current.updateEventData(type);
-    let newEvent = topAreaRef.current.getNewEventData();
-    if (newEvent) {
-      console.log(newEvent);
-      setEventList([...eventList, newEvent]);
-      topAreaRef.current.clearAllInput();
-      newEvent = topAreaRef.current.getNewEventData();
-    }
-    // bug: newEvent 不會清空
-  }
+  const handleEventSubmit = useCallback(
+    (type) => {
+      topAreaRef.current.updateEventData(type);
+      let newEvent = topAreaRef.current.getNewEventData();
+      if (newEvent) {
+        console.log(newEvent);
+        setEventList([...eventList, newEvent]);
+        topAreaRef.current.clearAllInput();
+      }
+    },
+    [topAreaRef]
+  );
 
   // 刪除事件
   function deleteEvent(eventId) {

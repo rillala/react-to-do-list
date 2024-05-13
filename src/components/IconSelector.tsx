@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, forwardRef } from "react";
+import { useEffect, useState, forwardRef } from "react";
 
 export const IconSelector = forwardRef((props, ref) => {
   const { onIconChange } = props;

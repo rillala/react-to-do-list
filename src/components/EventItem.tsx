@@ -1,13 +1,7 @@
 import "./bottomCss.css";
-import {
-  useEffect,
-  useState,
-  Suspense,
-  forwardRef,
-  useRef,
-  useMemo,
-} from "react";
+import { useEffect, useState, forwardRef, useRef } from "react";
 import { Box } from "@mui/system";
+import useImage from "use-image";
 
 interface Item {
   id: number;
@@ -58,14 +52,16 @@ export const EventItem = forwardRef((props, ref) => {
     onsubmitEdit(editInfo.current);
   };
 
-  // 處理 isEdit 切換後的副作用
+  // 處理 icon 圖片
+  const [isLoading, setIsLoading] = useState(true);
 
   // 下載 icon 圖片
   useEffect(() => {
     fetch(item.icon)
       .then((res) => res.json())
       .then((json) => {
-        setIconUrl(json);
+        setIconUrl(json.sprites.front_default);
+        setInterval(() => setIsLoading(false), 500);
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, [item.icon]);
@@ -75,8 +71,13 @@ export const EventItem = forwardRef((props, ref) => {
       <div className="eventItem">
         {/* icon,topic 顯示辦法 */}
         <div>
-          {iconUrl && (
+          {/* {iconUrl && (
             <img src={iconUrl.sprites.front_default} alt={item.topic} />
+          )} */}
+          {isLoading ? (
+            <p>loading...</p>
+          ) : (
+            <img src={iconUrl} alt={item.topic} />
           )}
         </div>
 
