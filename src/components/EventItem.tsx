@@ -1,7 +1,6 @@
 import "./bottomCss.css";
-import { useEffect, useState, forwardRef, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Box } from "@mui/system";
-import useImage from "use-image";
 
 interface Item {
   id: number;
@@ -20,8 +19,13 @@ interface ItemProps {
   onsubmitEdit: () => void;
 }
 
-export const EventItem = forwardRef((props, ref) => {
-  const { item, onDelete, toggleEdit, onsubmitEdit }: ItemProps = props;
+export const EventItem = ({
+  item,
+  onDelete,
+  toggleEdit,
+  onsubmitEdit,
+}: ItemProps) => {
+  // const { item, onDelete, toggleEdit, onsubmitEdit }: ItemProps = props;
 
   const [iconUrl, setIconUrl] = useState();
   const infoEditInput = useRef(null);
@@ -48,12 +52,8 @@ export const EventItem = forwardRef((props, ref) => {
       id: item.id,
       info: newInfoValue.current,
     };
-    // console.log(editInfo.current);
     onsubmitEdit(editInfo.current);
   };
-
-  // 處理 icon 圖片
-  const [isLoading, setIsLoading] = useState(true);
 
   // 下載 icon 圖片
   useEffect(() => {
@@ -61,7 +61,6 @@ export const EventItem = forwardRef((props, ref) => {
       .then((res) => res.json())
       .then((json) => {
         setIconUrl(json.sprites.front_default);
-        setInterval(() => setIsLoading(false), 500);
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, [item.icon]);
@@ -71,14 +70,7 @@ export const EventItem = forwardRef((props, ref) => {
       <div className="eventItem">
         {/* icon,topic 顯示辦法 */}
         <div>
-          {/* {iconUrl && (
-            <img src={iconUrl.sprites.front_default} alt={item.topic} />
-          )} */}
-          {isLoading ? (
-            <p>loading...</p>
-          ) : (
-            <img src={iconUrl} alt={item.topic} />
-          )}
+          {iconUrl ? <img src={iconUrl} alt={item.topic} /> : <p>loading...</p>}
         </div>
 
         <p>{item.topic}</p>
@@ -122,4 +114,4 @@ export const EventItem = forwardRef((props, ref) => {
       </div>
     </>
   );
-});
+};
