@@ -1,18 +1,18 @@
-import EventItem from "../components/EventItem";
+import { EventItem } from "../components/EventItem";
 import { Box } from "@mui/system";
 
 interface Props {
   list: object[];
   onDelete: () => void;
   toggleEdit: () => void;
-  onInfoEdit: () => void;
+  onsubmitEdit: () => void;
 }
 
 export default function EventList({
   list,
   onDelete,
   toggleEdit,
-  onInfoEdit,
+  onsubmitEdit,
 }: Props) {
   const listA = list.filter((item) => item.type === 0);
   const listB = list.filter((item) => item.type === 1);
@@ -31,7 +31,7 @@ export default function EventList({
                   item={item}
                   onDelete={onDelete}
                   toggleEdit={toggleEdit}
-                  onInfoEdit={onInfoEdit}
+                  onsubmitEdit={onsubmitEdit}
                 />
               ))}
             </ul>
@@ -47,7 +47,7 @@ export default function EventList({
                   item={item}
                   onDelete={onDelete}
                   toggleEdit={toggleEdit}
-                  onInfoEdit={onInfoEdit}
+                  onsubmitEdit={onsubmitEdit}
                 />
               ))}
             </ul>
@@ -63,7 +63,7 @@ export default function EventList({
                   item={item}
                   onDelete={onDelete}
                   toggleEdit={toggleEdit}
-                  onInfoEdit={onInfoEdit}
+                  onsubmitEdit={onsubmitEdit}
                 />
               ))}
             </ul>

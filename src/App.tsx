@@ -1,75 +1,25 @@
-import TopArea from "./layOut/TopArea";
+import { TopArea } from "./layOut/TopArea";
 import EventList from "./layOut/EventList";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, createRef } from "react";
+
+// * 改由 TopArea 統合好整個 newEvent 之後傳遞給 App.tsx 的 eventList
 
 function App() {
-  // const [eventList, setEventList] = useState(initialList);
   const [eventList, setEventList] = useState([]);
-  const newEvent = useRef({});
-  const [newEventId, setNewEventId] = useState(-1);
+  const topAreaRef = createRef();
 
-  function handleTopic(e) {
-    const updatedTopic = e.target.value;
-    // setInputTopic(updatedTopic);
-    console.log(updatedTopic);
-    newEvent.current.topic = updatedTopic;
-    // setNewEvent((ne) => ({ ...ne, topic: updatedTopic }));
+  // submit new event (with different type) & clear input area
+  function handleEventSubmit(type) {
+    topAreaRef.current.updateEventData(type);
+    let newEvent = topAreaRef.current.getNewEventData();
+    if (newEvent) {
+      console.log(newEvent);
+      setEventList([...eventList, newEvent]);
+      topAreaRef.current.clearAllInput();
+      newEvent = topAreaRef.current.getNewEventData();
+    }
+    // bug: newEvent 不會清空
   }
-
-  // 更新事件內容 (Info)
-  const [inputInfo, setInputInfo] = useState("");
-
-  function handleInfo(e) {
-    const updateInfo = e.target.value;
-    setInputInfo(updateInfo);
-    setNewEvent({ ...newEvent, info: updateInfo });
-  }
-
-  // 更新事件圖案 (Icon)
-  const [inputIcon, setInputIcon] = useState("");
-
-  function handleIcon(e) {
-    const updateIcon = e.target.value;
-    setInputIcon(updateIcon);
-    setNewEvent({ ...newEvent, icon: updateIcon });
-  }
-
-  // 處理事件種類指定, 並新增事件
-  const [eventType, setEventType] = useState("");
-
-  const submitEvent = useCallback(
-    (type) => {
-      console.log(
-        "submit",
-        newEvent,
-        newEvent.icon,
-        newEvent.topic,
-        newEvent.info
-      );
-      const isFilled =
-        newEvent && newEvent.icon && newEvent.topic && newEvent.info;
-
-      if (isFilled) {
-        const eventId = new Date().getTime();
-        setEventType(type); // 假設你有這個 setState 函數來更新某個 state
-        setNewEventId(eventId); // 假設你有這個 setState 函數來更新某個 state
-        setNewEvent((newEvent) => ({
-          ...newEvent,
-          type: type,
-          id: eventId,
-          isEdit: false,
-        }));
-
-        setEventList((eventList) => [
-          ...eventList,
-          { ...newEvent, type: type, id: eventId, isEdit: false },
-        ]);
-      } else {
-        alert("Please choose all the input!");
-      }
-    },
-    [newEvent]
-  );
 
   // 刪除事件
   function deleteEvent(eventId) {
@@ -79,47 +29,48 @@ function App() {
   }
 
   // 編輯事件
-  function editEvent(eventId) {
+  const currentEdit = useRef(null);
+
+  //// 1.切換 isEdit 狀態
+  function toggleEventEdit(eventId) {
     setEventList((eventList) =>
       eventList.map((event) =>
         event.id === eventId ? { ...event, isEdit: !event.isEdit } : event
       )
     );
   }
+  //// 2.接收編輯的值
+  // function editInfo(e, eventId) {
+  //   currentEdit.current = e.target.value;
+  // }
 
-  function editInfo(e, eventId) {
-    const updatedInfo = e.target.value;
+  ////3.更新編輯的值
+  function submitInfo(eventInfo) {
+    console.log(eventInfo);
+
     setEventList((eventList) =>
       eventList.map((event) =>
-        event.id === eventId ? { ...event, info: updatedInfo } : event
+        event.id === eventInfo.id
+          ? { ...event, info: eventInfo.info, isEdit: !event.isEdit }
+          : event
       )
     );
   }
 
-  useEffect(() => {
-    // setInputTopic("");
-    setInputInfo("");
-    setInputIcon("");
-    setNewEvent(null);
-  }, [eventList]);
-
   return (
     <>
       <TopArea
-        inputInfo={inputInfo}
-        onInfoChange={handleInfo}
-        onTopicChange={handleTopic}
-        inputIcon={inputIcon}
-        onIconChange={handleIcon}
-        onEventSubmit={submitEvent}
+        ref={topAreaRef}
+        onEventAsubmit={() => handleEventSubmit(0)}
+        onEventBsubmit={() => handleEventSubmit(1)}
+        onEventCsubmit={() => handleEventSubmit(2)}
       />
 
       <EventList
         list={eventList}
-        onEdit={editEvent}
+        toggleEdit={toggleEventEdit}
         onDelete={deleteEvent}
-        toggleEdit={editEvent}
-        onInfoEdit={editInfo}
+        onsubmitEdit={submitInfo}
       ></EventList>
     </>
   );

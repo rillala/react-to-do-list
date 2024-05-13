@@ -1,23 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, forwardRef } from "react";
 
-export default function IconSelector({ inputIcon, onIconChange }) {
-  const [icon, setIcon] = useState([]);
+export const IconSelector = forwardRef((props, ref) => {
+  const { onIconChange } = props;
+  const [iconList, setIconList] = useState([]);
 
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon")
       .then((res) => res.json())
       .then((json) => {
-        setIcon(json.results);
+        setIconList(json.results);
       });
     console.log("get pokemon original list again");
   }, []);
 
+  console.log("IconSelector rendered!");
+
   return (
-    <select value={inputIcon} onChange={onIconChange}>
+    <select ref={ref} onChange={onIconChange} defaultValue="">
       <option value="" disabled>
         choose icon
       </option>
-      {icon.map((each) => {
+      {iconList.map((each) => {
         return (
           <option key={each.name} value={each.url}>
             {each.name}
@@ -26,4 +29,4 @@ export default function IconSelector({ inputIcon, onIconChange }) {
       })}
     </select>
   );
-}
+});
