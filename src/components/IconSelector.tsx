@@ -1,6 +1,6 @@
-import { useEffect, useState, forwardRef } from "react";
+import { useEffect, useState, forwardRef, memo, useMemo } from "react";
 
-export const IconSelector = forwardRef((props, ref) => {
+const IconSelector = forwardRef((props, ref) => {
   const { onIconChange } = props;
   const [iconList, setIconList] = useState([]);
 
@@ -15,18 +15,25 @@ export const IconSelector = forwardRef((props, ref) => {
 
   console.log("IconSelector rendered!");
 
+  // 如果想要 options 不每次都重新渲染, 要包在 useMemo 裡面
+  const options = useMemo(() => {
+    console.log("Mapping iconList to options");
+
+    return iconList.map((each) => (
+      <option key={each.name} value={each.url}>
+        {each.name}
+      </option>
+    ));
+  }, [iconList]);
+
   return (
     <select ref={ref} onChange={onIconChange} defaultValue="">
       <option value="" disabled>
         choose icon
       </option>
-      {iconList.map((each) => {
-        return (
-          <option key={each.name} value={each.url}>
-            {each.name}
-          </option>
-        );
-      })}
+      {options}
     </select>
   );
 });
+
+export default memo(IconSelector);

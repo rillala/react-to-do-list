@@ -1,5 +1,5 @@
 import Button from "../components/Button";
-import { IconSelector } from "../components/IconSelector";
+import IconSelector from "../components/IconSelector";
 import "./topCss.css";
 import { useCallback, useRef, forwardRef, useImperativeHandle } from "react";
 
