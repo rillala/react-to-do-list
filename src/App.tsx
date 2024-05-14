@@ -6,30 +6,41 @@ import { useState, useCallback, useRef, createRef } from "react";
 
 function App() {
   const [eventList, setEventList] = useState([]);
-  const topAreaRef = createRef();
+  const topAreaRef = useRef();
 
-  // submit new event (with different type) & clear input area
-  const handleEventSubmit = useCallback(
+  // ----新增事件
+  // note:當使用 useCallback 定義 originalEventSubmit 並在裡面調用 setEventList([...eventList, newEvent]) 時，可能會遇到無法新增事件的問題。這通常是因為 eventList 沒有正確更新的緣故。這裡的問題是你在依賴陣列中沒有包含 eventList，導致 eventList 的值始終保持為函數被創建時的快照。
+  const originalEventSubmit = useCallback(
     (type) => {
       topAreaRef.current.updateEventData(type);
-      let newEvent = topAreaRef.current.getNewEventData();
+      const newEvent = topAreaRef.current.getNewEventData();
       if (newEvent) {
         console.log(newEvent);
-        setEventList([...eventList, newEvent]);
+        setEventList((eventList) => [...eventList, newEvent]);
         topAreaRef.current.clearAllInput();
       }
     },
-    [topAreaRef]
+    [topAreaRef, eventList]
   );
 
-  // 刪除事件
+  const submitTypeA = useCallback(() => {
+    originalEventSubmit(0);
+  }, []);
+  const submitTypeB = useCallback(() => {
+    originalEventSubmit(1);
+  }, []);
+  const submitTypeC = useCallback(() => {
+    originalEventSubmit(2);
+  }, []);
+
+  // ----刪除事件
   function deleteEvent(eventId) {
     setEventList((eventList) => {
       return eventList.filter((event) => event.id !== eventId);
     });
   }
 
-  // 編輯事件
+  // ----編輯事件
   const currentEdit = useRef(null);
 
   //// 1.切換 isEdit 狀態
@@ -40,12 +51,8 @@ function App() {
       )
     );
   }
-  //// 2.接收編輯的值
-  // function editInfo(e, eventId) {
-  //   currentEdit.current = e.target.value;
-  // }
 
-  ////3.更新編輯的值
+  ////2.更新編輯的值
   function submitInfo(eventInfo) {
     console.log(eventInfo);
 
@@ -62,9 +69,9 @@ function App() {
     <>
       <TopArea
         ref={topAreaRef}
-        onEventAsubmit={() => handleEventSubmit(0)}
-        onEventBsubmit={() => handleEventSubmit(1)}
-        onEventCsubmit={() => handleEventSubmit(2)}
+        onEventAsubmit={submitTypeA}
+        onEventBsubmit={submitTypeB}
+        onEventCsubmit={submitTypeC}
       />
 
       <EventList
